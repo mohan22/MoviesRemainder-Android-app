@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private StringBuffer buffer;
     private char[] chars;
     private JSONObject json;
+    private JSONArray jsArray;
     private String title;
    // private String data;
 
@@ -79,10 +81,20 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 try {
-                    json = new JSONObject(data);
 
+                    json = new JSONObject(data);
                     title =  json.getJSONObject("dates").getString("minimum");
-                    Log.d("1", title);
+                    Log.d("123", title);
+
+                    jsArray = json.getJSONArray("results");
+
+                    for(int i=0;i<jsArray.length();i++)
+                    {
+                        json = jsArray.getJSONObject(i);
+                        Log.d("1235", json.getString("title"));
+                    }
+
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
