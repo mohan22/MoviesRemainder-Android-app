@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     json = new JSONObject(data);
 
-                    title = (String) json.get("dates");
+                    title =  json.getJSONObject("dates").getString("minimum");
                     Log.d("1", title);
 
                 } catch (JSONException e) {
