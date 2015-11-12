@@ -6,6 +6,9 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +24,8 @@ import java.lang.Object;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static android.view.ViewGroup.*;
 //TODO: use opening.json in rottentomatoes.com
 
 
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final TextView date=new TextView(this);
 
         new Thread(new Runnable() {
             public void run() {
@@ -85,6 +92,19 @@ public class MainActivity extends AppCompatActivity {
                     json = new JSONObject(data);
                     title =  json.getJSONObject("dates").getString("minimum");
                     Log.d("123", title);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            LinearLayout myLayout = (LinearLayout) findViewById(R.id.linearLayout);
+                            LayoutParams lp = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                            date.setLayoutParams(lp);
+                            date.setText(title);
+                            myLayout.addView(date);
+
+
+                        }
+                    });
 
                     jsArray = json.getJSONArray("results");
 
