@@ -15,7 +15,7 @@ public class Movie
     public double average;
 
 
-    public Movie(String Id,String Poster,String Language,String ReleaseDate,double Popularity,long VoteCount,double Average)
+    public Movie(String Id,String Poster,String Language,String Title,String ReleaseDate,double Popularity,long VoteCount,double Average)
     {
         id=Id;
         poster=Poster;
@@ -24,6 +24,7 @@ public class Movie
         popularity=Popularity;
         voteCount = VoteCount;
         average = Average;
+        title=Title;
     }
 
 }

@@ -6,6 +6,7 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import java.lang.Object;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import static android.view.ViewGroup.*;
 //TODO: use opening.json in rottentomatoes.com
@@ -38,12 +40,38 @@ public class MainActivity extends AppCompatActivity {
     private JSONObject json;
     private JSONArray jsArray;
     private String title;
+
+
+    private String movietitle;
+    private Manager manager;
    // private String data;
+
+
+    public void AddTextViewToList()
+    {
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+       // Log.d("143",title);
+        final LinearLayout myLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        final LayoutParams lp = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+        for (int i=0;i<manager.moviesList.size();i++)
+        {
+
+            TextView tmp = new TextView(this);
+            tmp.setLayoutParams(lp);
+            tmp.setText(manager.moviesList.get(i).title);
+            tmp.setTextSize(20);
+            myLayout.addView(tmp);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        manager = new Manager();
 
         final TextView date=new TextView(this);
 
@@ -93,27 +121,51 @@ public class MainActivity extends AppCompatActivity {
                     title =  json.getJSONObject("dates").getString("minimum");
                     Log.d("123", title);
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            LinearLayout myLayout = (LinearLayout) findViewById(R.id.linearLayout);
-                            LayoutParams lp = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                            date.setLayoutParams(lp);
-                            date.setText(title);
-                            myLayout.addView(date);
 
-
-                        }
-                    });
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//
+//                            date.setLayoutParams(lp);
+//                            date.setText(title);
+//                            myLayout.addView(date);
+//
+//
+//                        }
+//                    });
 
                     jsArray = json.getJSONArray("results");
+
+
+
+
 
                     for(int i=0;i<jsArray.length();i++)
                     {
                         json = jsArray.getJSONObject(i);
-                        Log.d("1235", json.getString("title"));
+                        movietitle=json.getString("title");
+                        Log.d("1235",movietitle);
+                        manager.moviesList.add(new Movie("","","",movietitle,"",0,0,0));
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                AddTextViewToList(movietitle);
+//                            }
+//                        });
+
+//                        try {
+//                            Thread.sleep(100);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
                     }
 
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AddTextViewToList();
+                        }
+                    });
 
 
                 } catch (JSONException e) {
