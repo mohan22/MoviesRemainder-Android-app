@@ -1,9 +1,11 @@
 package com.example.prime.moviesremainder;
 
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,11 +60,14 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0;i<manager.moviesList.size();i++)
         {
 
+
             TextView tmp = new TextView(this);
             tmp.setLayoutParams(lp);
             tmp.setText(manager.moviesList.get(i).title);
             tmp.setTextSize(20);
+            tmp.setGravity(Gravity.CENTER_HORIZONTAL);
             myLayout.addView(tmp);
+
         }
     }
 
@@ -145,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                         json = jsArray.getJSONObject(i);
                         movietitle=json.getString("title");
                         Log.d("1235",movietitle);
-                        manager.moviesList.add(new Movie("","","",movietitle,"",0,0,0));
+                        manager.moviesList.add(new Movie(json.getString("id"),"",json.getString("original_language"),movietitle,json.getString("release_date"),Double.parseDouble(json.getString("popularity")),Long.parseLong(json.getString("vote_count")),Double.parseDouble(json.getString("vote_average"))));
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
