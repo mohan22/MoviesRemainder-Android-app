@@ -1,5 +1,6 @@
 package com.example.prime.moviesremainder;
 
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
        // Log.d("143",title);
         final LinearLayout myLayout = (LinearLayout) findViewById(R.id.linearLayout);
         final LayoutParams lp = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        //final LayoutParams lineparams = new LayoutParams(Layout)
 
         for (int i=0;i<manager.moviesList.size();i++)
         {
@@ -63,10 +65,16 @@ public class MainActivity extends AppCompatActivity {
 
             TextView tmp = new TextView(this);
             tmp.setLayoutParams(lp);
-            tmp.setText(manager.moviesList.get(i).title);
+            tmp.setText(manager.moviesList.get(i).title + "\nLanguage :" + manager.moviesList.get(i).language + "\nRelease Date :" + manager.moviesList.get(i).releaseDate + "\nVotes :" + manager.moviesList.get(i).voteCount);
             tmp.setTextSize(20);
-            tmp.setGravity(Gravity.CENTER_HORIZONTAL);
+
+           // tmp.setGravity(Gravity.CENTER_HORIZONTAL);
             myLayout.addView(tmp);
+
+            View line = new View(this);
+            line.setBackgroundColor(Color.parseColor("#c0c0c0"));
+            line.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,2));
+            myLayout.addView(line);
 
         }
     }
