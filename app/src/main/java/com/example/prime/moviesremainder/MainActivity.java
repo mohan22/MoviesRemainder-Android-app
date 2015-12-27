@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private JSONObject json;
     private JSONArray jsArray;
     private String title;
-
+    public  static  Context context;
 
     private String movietitle;
     private Manager manager;
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             tmp.setText(manager.moviesList.get(i).title + "\nLanguage :" + manager.moviesList.get(i).language + "\nRelease Date :" + manager.moviesList.get(i).releaseDate + "\nVotes :" + manager.moviesList.get(i).voteCount);
             tmp.setTextSize(20);
 
+
            // tmp.setGravity(Gravity.CENTER_HORIZONTAL);
             myLayout.addView(tmp);
 
@@ -82,7 +83,11 @@ public class MainActivity extends AppCompatActivity {
             line.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, 2));
             myLayout.addView(line);
 
+
+
         }
+
+        SaveLoadData.SaveData(manager.moviesList,this.getApplicationContext());
     }
 
     @Override
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         manager = new Manager();
-
+        context = this.getApplicationContext();
         final TextView date=new TextView(this);
 
         if(!isOnline())
@@ -101,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("net", "sdf");
             // Toast.makeText(this, "Exiting..", Toast.LENGTH_SHORT).show();
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("No Active Internet Connection is Detected!");
+            alertDialogBuilder.setMessage("No Active Internet Connection is Detected! Fetching Last Saved Data..");
 
 //            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
 //                @Override
@@ -109,11 +114,21 @@ public class MainActivity extends AppCompatActivity {
 //                    Toast.makeText(MainActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
 //                }
 //            });
+            context = this.getApplicationContext();
+            manager.moviesList = SaveLoadData.LoadData(context);
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    AddTextViewToList();
+                }
+            });
 
             alertDialogBuilder.setNegativeButton("OK",new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
+                    dialog.dismiss();
+                    //finish();
                 }
             });
 
@@ -181,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
                             manager.moviesList.add(new Movie(json.getString("id"), "", json.getString("original_language"), movietitle, json.getString("release_date"), Double.parseDouble(json.getString("popularity")), Long.parseLong(json.getString("vote_count")), Double.parseDouble(json.getString("vote_average"))));
 //
                         }
+
+
 
                         runOnUiThread(new Runnable() {
                             @Override

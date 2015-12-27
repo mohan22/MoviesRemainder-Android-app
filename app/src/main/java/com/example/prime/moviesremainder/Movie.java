@@ -14,6 +14,7 @@ public class Movie
     public long voteCount;
     public double average;
 
+    public Movie(){}
 
     public Movie(String Id,String Poster,String Language,String Title,String ReleaseDate,double Popularity,long VoteCount,double Average)
     {
