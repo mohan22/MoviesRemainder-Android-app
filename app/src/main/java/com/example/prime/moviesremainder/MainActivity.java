@@ -9,6 +9,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,37 +57,19 @@ public class MainActivity extends AppCompatActivity {
     private Manager manager;
    // private String data;
 
+    private RecyclerView moviesRecyclerView;
+    private RecyclerView.Adapter moviesAdapter;
+    private RecyclerView.LayoutManager moviesLayoutManager;
 
     public void AddTextViewToList()
     {
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        moviesAdapter = new MoviesAdapter(manager.moviesList);
+       // moviesRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-       // Log.d("143",title);
-        final LinearLayout myLayout = (LinearLayout) findViewById(R.id.linearLayout);
-        final LayoutParams lp = new LayoutParams( LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        //final LayoutParams lineparams = new LayoutParams(Layout)
-
-        for (int i=0;i<manager.moviesList.size();i++)
-        {
-
-
-            TextView tmp = new TextView(this);
-            tmp.setLayoutParams(lp);
-            tmp.setText(manager.moviesList.get(i).title + "\nLanguage :" + manager.moviesList.get(i).language + "\nRelease Date :" + manager.moviesList.get(i).releaseDate + "\nVotes :" + manager.moviesList.get(i).voteCount);
-            tmp.setTextSize(20);
-
-
-           // tmp.setGravity(Gravity.CENTER_HORIZONTAL);
-            myLayout.addView(tmp);
-
-            View line = new View(this);
-            line.setBackgroundColor(Color.parseColor("#c0c0c0"));
-            line.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, 2));
-            myLayout.addView(line);
-
-
-
-        }
+        moviesRecyclerView.setAdapter(moviesAdapter);
+        prepareMovieData();
+//
 
         SaveLoadData.SaveData(manager.moviesList,this.getApplicationContext());
     }
@@ -95,12 +79,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        moviesRecyclerView = (RecyclerView)findViewById(R.id.movies_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        moviesRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        moviesLayoutManager = new LinearLayoutManager(getApplicationContext());
+        moviesRecyclerView.setLayoutManager(moviesLayoutManager);
+
+        // specify an adapter (see also next example)
+//
 
 
         manager = new Manager();
         context = this.getApplicationContext();
         final TextView date=new TextView(this);
 
+//        prepareMovieData();
         if(!isOnline())
         {
             Log.d("net", "sdf");
@@ -108,12 +105,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("No Active Internet Connection is Detected! Fetching Last Saved Data..");
 
-//            alertDialogBuilder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface arg0, int arg1) {
-//                    Toast.makeText(MainActivity.this,"You clicked yes button",Toast.LENGTH_LONG).show();
-//                }
-//            });
+//
             context = this.getApplicationContext();
             manager.moviesList = SaveLoadData.LoadData(context);
 
@@ -219,6 +211,13 @@ public class MainActivity extends AppCompatActivity {
 
 //
     }
+
+    private void prepareMovieData() {
+
+            moviesAdapter.notifyDataSetChanged();
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
