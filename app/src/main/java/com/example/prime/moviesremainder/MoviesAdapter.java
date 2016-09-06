@@ -18,12 +18,13 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         //public TextView mTextView;
-        public TextView title, year, genre;
+        public TextView title, year, genre,votes;
         public ViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             genre = (TextView) view.findViewById(R.id.genre);
             year = (TextView) view.findViewById(R.id.year);
+            votes = (TextView) view.findViewById(R.id.votes);
         }
     }
 
@@ -50,6 +51,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         viewHolder.title.setText(movie.title);
         viewHolder.genre.setText(movie.language);
         viewHolder.year.setText(movie.releaseDate);
+        viewHolder.votes.setText(Long.toString(movie.voteCount));
 
     }
 
@@ -57,4 +59,10 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     public int getItemCount() {
         return mDataset.size();
     }
+
+
+
+
+
+
 }

@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter moviesAdapter;
     private RecyclerView.LayoutManager moviesLayoutManager;
 
+
+
+
     public void AddTextViewToList()
     {
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         moviesRecyclerView = (RecyclerView)findViewById(R.id.movies_recycler_view);
 
@@ -209,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("12", "testss");
 
+
+
 //
     }
 
@@ -253,4 +261,13 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+
+
+
+
+
+
+
+
 }
